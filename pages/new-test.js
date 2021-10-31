@@ -1,8 +1,9 @@
-import Head from 'next/head'
-import { useState } from 'react'
+import Head from 'next/head';
+import { useState } from 'react';
+import moment from 'moment'
 
 //Components
-import EventCard from '../components/EventCard'
+import EventCard from '../components/EventCard';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -20,10 +21,18 @@ export async function getServerSideProps() {
   }
 }
 
-export default function Home({ data }) {
+export default function NewTest({ data }) {
   const [ searchTerm, setSearchTerm ] = useState('');
 
-  const pageTitle = "Upcoming UK Tech Events";
+  const filteredData = data.filter(event => {
+    const now = new Date()
+    const startDate =  moment(event.start.rfc2882local);
+    if(now.getTime() < event.start.timestamp && differenceInDays(now, startDate) <=5){
+      return event
+    }
+});
+
+console.log(filteredData);
 
   return (
     <div>
@@ -31,15 +40,13 @@ export default function Home({ data }) {
         <title>Thomas Hitchcock</title>
         <meta name="description" content="Tech Events & Weather App for Whereverly by Thomas Hitchcock" />
       </Head>
-      <Box sx={{backgroundColor: "primary.light" }} pt={3} >
+      <Box sx={{ backgroundColor: "primary.light" }} pt={3} >
         <Container maxWidth="lg" className="pageContainer">
           <Paper className="searchContainer" elevation={2}>
-            <div className="pageTitle">
-              {pageTitle}
-            </div>
+            <div className="pageTitle">Upcoming Tech Events</div>
             <TextField
               className="searchBar"
-              label="Search for event" 
+              label="Search by location" 
               variant="standard"
               onChange={(event) => {
                 setSearchTerm(event.target.value);

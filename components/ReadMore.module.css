@@ -1,0 +1,12 @@
+.readOrHide {
+  color: blue;
+  cursor: pointer;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  font-size: 1rem;
+  width: 95%;
+}
